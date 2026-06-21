@@ -1,46 +1,43 @@
 # 🎨 ChromaBound
 
-## 📝 Sobre o Projeto
-O **ChromaBound** é um jogo eletrônico educativo bidimensional (2D) que transpõe os conceitos abstratos da **Teoria das Cores de Wassily Kandinsky** para mecânicas práticas de jogabilidade inspiradas no clássico estilo *Arkanoid*. 
+O **ChromaBound** é um jogo eletrônico educativo em 2D que une os conceitos abstratos da **Teoria das Cores** a mecânicas dinâmicas de jogabilidade inspiradas no clássico estilo *Arkanoid*. 
 
-Desenvolvido como um projeto prático que aplica conceitos rigorosos de Engenharia de Software, o jogo coloca o jogador no controle de um personagem pintor (Rose) que deve selecionar, misturar e rebater esferas coloridas para eliminar monstros na tela. O sucesso no combate depende diretamente da equivalência cromática entre a esfera lançada e a cor do inimigo atingido.
-
----
-
-## 🕹️ Mecânicas do Jogo
-* **Movimentação Dinâmica:** O jogador se move lateralmente pela base da tela para encontrar o melhor ângulo vetorial de rebote com o pincel.
-* **Sistema de Combate Cromático:** * Se a esfera e o monstro possuírem a **mesma cor**, o inimigo é eliminado e o jogador pontua.
-  * Se as cores forem **diferentes**, o monstro permanece intacto e o sistema processa apenas a física de rebatimento tradicional.
-* **Mistura de Cores (Níveis Avançados):** Para derrotar monstros que exibem cores secundárias (como Verde, Roxo ou Laranja), o jogador deve realizar a combinação em tempo real das tintas primárias corretas antes de lançar a esfera.
-* **Gerenciamento de Ciclo de Jogo:** O sistema controla um limite de 3 vidas. Se a esfera cair sem ser interceptada pelo pincel, uma vida é subtraída até o acionamento do *Game Over*. O progresso acontece de forma incremental a cada tela limpa.
+O projeto foi desenvolvido aplicando práticas de Engenharia de Software, utilizando o *framework* ágil **Scrum** para a gestão de sprints e o **GameMaker** como motor de desenvolvimento.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
-* **Engine:** GameMaker Studio
-* **Linguagem de Programação:** GameMaker Language (GML Code) — Utilização de sintaxe textual e orientada a eventos para manipulação de matrizes, colisões em tempo real e otimização de memória.
-* **Modelagem de Sistema:** Linguagem de Modelagem Unificada (UML).
+## 🕹️ O Jogo
+O jogador controla a pintora **Rose** e deve selecionar, misturar e rebater esferas coloridas para eliminar os inimigos na tela. O sucesso no combate depende diretamente da equivalência cromática entre a esfera lançada e a cor do inimigo atingido.
+
+### Principais Mecânicas:
+* **Combate Cromático:** Inimigos só sofrem dano se forem atingidos por uma esfera da mesma cor.
+* **Mistura de Cores:** Para derrotar monstros com cores secundárias (Verde, Roxo, Laranja), o jogador deve combinar as tintas primárias corretas em tempo real.
+* **Física de Rebote:** Movimentação lateral e cálculo vetorial de rebatimento com o pincel.
+* **Game Loop:** Sistema de progresso por fases com limite de 3 vidas.
 
 ---
 
-## 📐 Engenharia de Software e Arquitetura
-O projeto foi estruturado seguindo boas práticas de desenvolvimento para evitar o antipadrão de *God Object* (classes infladas) e o surgimento de *código espaguete* (alto acoplamento). 
+## 🛠️ Tecnologias e Ferramentas
+* **Engine:** GameMaker Studio (Linguagem GML Code)
+* **Design Gráfico:** Piskel (Arte vetorial e animações quadro a quadro)
+* **Modelagem:** Diagramas UML (Casos de Uso e Atividades)
+* **Metodologia:** Scrum (Desenvolvimento incremental por Sprints)
 
-### Artefatos de Modelagem (UML)
-O comportamento e o escopo do software foram mapeados utilizando diagramas padrões:
-1. **Diagrama de Casos de Uso:** Mapeia as interações e responsabilidades entre o *Ator Primário (Jogador)* e o *Ator Secundário (Sistema GML)*.
-2. **Diagrama de Atividades:** Descreve a lógica sequencial do *game loop*, detalhando os pontos de decisão condicional das validações cromáticas simples e secundárias.
-
-*(Opcional: Se você gerou as imagens dos diagramas pelo PlantUML, pode salvá-las em uma pasta `/img` e linká-las aqui)*
 ---
 
-## 🚀 Como Executar o Projeto
+## 🚀 Como Executar e Testar o Projeto
 
-### Pré-requisitos
-Para abrir e compilar o projeto, você precisará do:
-* [GameMaker Studio](https://gamemaker.io/) instalado (versão recente com suporte a GML Code/Visual).
+### 📋 Pré-requisitos
+Antes de começar, certifique-se de cumprir os seguintes requisitos para que o projeto funcione sem erros:
+* Ter o [GameMaker Studio](https://gamemaker.io/) instalado em sua máquina **na última atualização disponível**.
+* Ter o Git instalado para clonar o repositório (ou baixar o projeto como arquivo `.zip`).
 
-### Passo a Passo
-1. Clone este repositório para a sua máquina local:
-   ```bash
-   git clone [https://github.com/seu-usuario/chromabound.git](https://github.com/seu-usuario/chromabound.git)
+---
+
+### 🛠️ Passo a Passo para Execução
+
+**1. Baixar o Projeto:**
+Você pode baixar os arquivos de duas formas. Escolha a que preferir:
+* **Via Git (Clonagem):** Abra o seu terminal ou prompt de comando e execute:
+```bash
+  git clone [https://github.com/seu-usuario/chromabound.git](https://github.com/seu-usuario/chromabound.git)
