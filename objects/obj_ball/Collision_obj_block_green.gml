@@ -4,7 +4,10 @@ rebate_count_wall = 0;
 var cor_correta = scr_cor_correta(cor_bola, other.cor_monstro);
 
 // 2. Resolve a colisão/rebote usando a função centralizada e robusta
-scr_bounce_off_object(other);
+if (!has_bounced) {
+    scr_bounce_off_object(other);
+    has_bounced = true;
+}
 
 // 3. Aplica destruição se a cor estiver correta
 if (cor_correta)

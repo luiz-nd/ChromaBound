@@ -28,8 +28,8 @@ else if (options_list == 2)
 	//Very Hard
 	else if(option_selected == 2)
 	{
-	global.speed_ball =  9
-	global.speed_player = 10
+	global.speed_ball =  10
+	global.speed_player = 11
 	  alarm[0] = 60;
 	}
 	//Voltar para o Menu

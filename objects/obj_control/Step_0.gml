@@ -92,5 +92,16 @@ if (!global.paused) {
             x = left_limit;
             dir_move = 1;
         }
-	}
-}    
+    }
+}
+
+// Controle de ativação do pause
+if (keyboard_check_pressed(vk_enter)) {
+    if (!global.paused) {
+        global.paused = true;
+        audio_play_sound(snd_pause, 10, false);
+        if (!instance_exists(obj_screen_paused)) {
+            instance_create_layer(0, 0, "Instances", obj_screen_paused);
+        }
+    }
+}

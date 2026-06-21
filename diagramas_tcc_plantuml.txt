@@ -8,91 +8,133 @@ PlantUML (https://www.plantuml.com/plantuml) para gerar as imagens em alta resol
 1. DIAGRAMA DE CASO DE USO (VERTICAL E COM ATORES CLÁSSICOS)
 --------------------------------------------------------------------------------
 @startuml
-left to right direction
 skinparam packageStyle rect
-skinparam ranksep 50
-skinparam nodesep 10
+skinparam ranksep 15
+skinparam nodesep 6
 
+' Atores
 actor "Jogador (Pintor)" as Jogador
 actor "Sistema ChromaBound (GML)" as Sistema
 
-rectangle "ChromaBound Game System" {
+' LINHA 1 DA GRADE
+package "1. Painel Inicial" as pkg_inicial {
+  usecase "Escolher Dificuldade no Menu" as UC_Menu
+  usecase "Iniciar Partida" as UC_Iniciar
+  usecase "Visualizar Vida, Score e High Score" as UC_Visualizar
   
-  package "Painel Inicial" {
-    usecase "Escolher Dificuldade no Menu" as UC_Menu
-    usecase "Iniciar Partida" as UC_Iniciar
-    usecase "Visualizar Recorde Histórico" as UC_Recorde
-  }
-  
-  package "Mecânicas de Movimento e Ação" {
-    usecase "Movimentar Pintor nas Laterais" as UC_Movimentar
-    usecase "Ajustar Ângulo de Rebote" as UC_Ajustar
-    usecase "Selecionar Cor Ativa da Tinta" as UC_Selecionar
-    usecase "Lançar Esfera Colorida" as UC_Lancar
-    usecase "Misturar Cores Primárias" as UC_Misturar
-    usecase "Rebater Esfera com Pincel" as UC_Rebater
-  }
-  
-  package "Validações e Combate" {
-    usecase "Detectar Colisão com Monstro" as UC_Colisao
-    usecase "Validar Igualdade de Cores simples" as UC_ValidaSimples
-    usecase "Validar Combinação de Cores secundárias" as UC_ValidaMistura
-    usecase "Eliminar Monstro da Tela" as UC_Eliminar
-    usecase "Acionar Rebatimento Físico" as UC_Fisica
-  }
-
-  package "Progressão e Ciclo de Jogo" {
-    usecase "Atualizar Pontuação" as UC_Pontos
-    usecase "Gerenciar Vidas (Máx 3)" as UC_Vidas
-    usecase "Detectar Queda da Esfera" as UC_Queda
-    usecase "Reiniciar Posição da Esfera" as UC_Reiniciar
-    usecase "Processar Game Over" as UC_GameOver
-    usecase "Progredir de Fase" as UC_ProximaFase
-    usecase "Declarar Game Clear (Vitória Final)" as UC_Vitoria
-  }
+  UC_Menu -[hidden]right-> UC_Iniciar
+  UC_Iniciar -[hidden]down-> UC_Visualizar
 }
 
-' Conexões do Jogador (Entradas pela esquerda)
+package "3. Validações e Combate" as pkg_validacoes {
+  usecase "Detectar Colisão com Monstro" as UC_Colisao
+  usecase "Validar Igualdade de Cores Primárias" as UC_ValidaPrimarias
+  usecase "Validar Combinação de Cores Secundárias" as UC_ValidaMistura
+  usecase "Eliminar Monstro da Tela" as UC_Eliminar
+  usecase "Acionar Rebatimento Físico" as UC_Fisica
+  
+  UC_Colisao -[hidden]down-> UC_ValidaPrimarias
+  UC_ValidaPrimarias -[hidden]right-> UC_ValidaMistura
+  UC_ValidaMistura -[hidden]down-> UC_Eliminar
+  UC_Eliminar -[hidden]right-> UC_Fisica
+}
+
+' LINHA 2 DA GRADE
+package "2. Mecânicas de Movimento e Ação" as pkg_mecanicas {
+  usecase "Movimentar Pintor nas Laterais" as UC_Movimentar
+  usecase "Ajustar Ângulo de Rebote" as UC_Ajustar
+  usecase "Selecionar Cor Ativa da Tinta" as UC_Selecionar
+  usecase "Aplicar Cor à Esfera" as UC_AplicarCor
+  usecase "Lançar Esfera Colorida" as UC_Lancar
+  usecase "Misturar Cores Primárias" as UC_Misturar
+  usecase "Rebater Esfera com Pincel" as UC_Rebater
+  usecase "Pausar Jogo e Acessar Opções" as UC_Pausar
+  
+  UC_Movimentar -[hidden]right-> UC_Ajustar
+  UC_Ajustar -[hidden]down-> UC_Selecionar
+  UC_Selecionar -[hidden]right-> UC_AplicarCor
+  UC_AplicarCor -[hidden]down-> UC_Lancar
+  UC_Lancar -[hidden]right-> UC_Misturar
+  UC_Misturar -[hidden]down-> UC_Rebater
+  UC_Rebater -[hidden]right-> UC_Pausar
+}
+
+package "4. Progressão e Ciclo de Jogo" as pkg_progressao {
+  usecase "Atualizar Pontuação" as UC_Pontos
+  usecase "Gerenciar Vidas" as UC_Vidas
+  usecase "Detectar Queda da Esfera" as UC_Queda
+  usecase "Reiniciar Posição da Esfera" as UC_Reiniciar
+  usecase "Processar Game Over" as UC_GameOver
+  usecase "Progredir de Fase" as UC_ProximaFase
+  usecase "Bonificar Vida Extra" as UC_ExtraVida
+  usecase "Atualizar Recorde Histórico" as UC_Recorde
+  usecase "Declarar Game Clear" as UC_Vitoria
+  
+  UC_Pontos -[hidden]right-> UC_Vidas
+  UC_Vidas -[hidden]down-> UC_Queda
+  UC_Queda -[hidden]right-> UC_Reiniciar
+  UC_Reiniciar -[hidden]down-> UC_GameOver
+  UC_GameOver -[hidden]right-> UC_ProximaFase
+  UC_ProximaFase -[hidden]down-> UC_ExtraVida
+  UC_ExtraVida -[hidden]right-> UC_Recorde
+  UC_Recorde -[hidden]down-> UC_Vitoria
+}
+
+' Alinhamento da Grade 2x2 e posicionamento dos Atores nas laterais
+Jogador -[hidden]right-> pkg_inicial
+pkg_inicial -[hidden]right-> pkg_validacoes
+pkg_validacoes -[hidden]right-> Sistema
+
+pkg_inicial -[hidden]down-> pkg_mecanicas
+pkg_validacoes -[hidden]down-> pkg_progressao
+pkg_mecanicas -[hidden]right-> pkg_progressao
+
+' Conexões do Jogador (Esquerda)
 Jogador --> UC_Menu
 Jogador --> UC_Iniciar
-Jogador --> UC_Recorde
+Jogador --> UC_Visualizar
 Jogador --> UC_Movimentar
 Jogador --> UC_Selecionar
 Jogador --> UC_Lancar
 Jogador --> UC_Misturar
 Jogador --> UC_Rebater
+Jogador --> UC_Pausar
 
-' Relações de Inclusão e Extensão de Ação
+' Conexões do Sistema (Direita)
+UC_AplicarCor --> Sistema
+UC_Colisao --> Sistema
+UC_Vidas --> Sistema
+UC_Pontos --> Sistema
+UC_ProximaFase --> Sistema
+UC_Recorde --> Sistema
+
+' Relacionamentos de Movimentação e Lançamento
+UC_Iniciar ..> UC_Visualizar : <<include>>
+UC_Selecionar ..> UC_AplicarCor : <<include>>
 UC_Movimentar ..> UC_Ajustar : <<include>>
-UC_Lancar ..> UC_Colisao : <<extend>>
-UC_Misturar ..> UC_Colisao : <<extend>>
-UC_Rebater ..> UC_Queda : <<extend>> \n(Se falhar no tempo)
+UC_Colisao .left.> UC_Lancar : <<extend>>
+UC_Colisao .left.> UC_Misturar : <<extend>>
+UC_Queda .left.> UC_Rebater : <<extend>> \n(Se falhar no tempo)
+UC_Pausar .up.> UC_Menu : <<include>> \n(Se decidir voltar ao início)
 
-' Relações de Combate
-UC_Colisao ..> UC_ValidaSimples : <<include>>
+' Relacionamentos de Validação e Combate
+UC_Colisao ..> UC_ValidaPrimarias : <<include>>
 UC_Colisao ..> UC_ValidaMistura : <<include>>
+UC_Colisao ..> UC_Fisica : <<include>>
 
-UC_ValidaSimples ..> UC_Eliminar : <<extend>> \n(Se cores iguais)
-UC_ValidaSimples ..> UC_Fisica : <<extend>> \n(Se cores diferentes)
+UC_Eliminar .up.> UC_Colisao : <<extend>> \n(Se cores iguais ou mistura de cores correta)
 
-UC_ValidaMistura ..> UC_Eliminar : <<extend>> \n(Se combinação correta)
-UC_ValidaMistura ..> UC_Fisica : <<extend>> \n(Se combinação errada)
-
+' Relacionamentos de Progressão e Ciclo
 UC_Eliminar ..> UC_Pontos : <<include>>
-UC_Eliminar ..> UC_ProximaFase : <<include>> \n(Último monstro)
-UC_ProximaFase ..> UC_Vitoria : <<extend>> \n(Fim da última fase)
+UC_ProximaFase .up.> UC_Eliminar : <<extend>> \n(Último monstro)
+UC_ExtraVida .up.> UC_ProximaFase : <<extend>> \n(Se passar com 1 vida)
+UC_Vitoria .up.> UC_ProximaFase : <<extend>> \n(Fim da última fase)
+UC_Vitoria .up.> UC_Recorde : <<include>>
 
-' Relações de Vidas e Reinício
-UC_Queda ..> UC_Vidas : <<include>>
-UC_Vidas ..> UC_Reiniciar : <<extend>> \n(Se Vidas > 0)
-UC_Vidas ..> UC_GameOver : <<extend>> \n(Se Vidas = 0)
-
-' Conexões do Sistema de Retorno (Saídas pela direita)
-UC_ValidaSimples <-- Sistema
-UC_ValidaMistura <-- Sistema
-UC_Vidas <-- Sistema
-UC_Pontos <-- Sistema
-UC_ProximaFase <-- Sistema
+UC_Queda .up.> UC_Vidas : <<include>>
+UC_Reiniciar .up.> UC_Vidas : <<extend>> \n(Se total de vidas > 0)
+UC_GameOver .up.> UC_Vidas : <<extend>> \n(Se total de vidas for nulo)
+UC_GameOver .up.> UC_Menu : <<include>> \n(Reiniciar partida no menu)
 
 @enduml
 
@@ -102,60 +144,85 @@ UC_ProximaFase <-- Sistema
 @startuml
 skinparam conditionStyle diamond
 start
-
+(A)
 :Acessar Menu Inicial;
-:Escolher Dificuldade;
+:Escolher Dificuldade no Menu;
 :Iniciar Partida;
+:Visualizar Vida, Score e High Score;
 
-repeat
-  :Jogador escolhe a Cor da Tinta;
-  :Sistema aplica a cor à Esfera;
-  :Jogador lança a Esfera;
+(B)
+:Jogador escolhe a Cor da Tinta;
+:Sistema aplica a cor à Esfera;
+:Jogador lança a Esfera;
   
-  repeat
-    :Movimentar Pintor e ajustar ângulo;
+(C)
+if (Jogador pressionou Enter para Pausar?) then (sim)
+  if (Escolheu voltar ao Menu?) then (sim)
+    (A)
+    detach
+  else (não [Despausar])
+    (C)
+    detach
+  endif
+else (não)
+endif
+
+:Ajustar posição do Pintor e ângulo de rebote;
     
-    if (Esfera colidiu com Monstro?) then (sim)
-      if (Monstro exige Cor Secundária?) then (sim)
-        if (Jogador misturou as cores primárias corretas?) then (sim)
-          :Eliminar Monstro;
-          :Somar +5 Pontos;
-        else (não)
-          :Acionar Física de Rebatimento\n(Monstro continua intacto);
-        endif
-      else (não [Cor Simples])
-        if (Cor da Esfera == Cor do Monstro?) then (sim)
-          :Eliminar Monstro;
-          :Somar +5 Pontos;
-        else (não)
-          :Acionar Física de Rebatimento;
-        endif
-      endif
-      
-    else (não [Caiu no limite inferior])
-      if (Jogador rebateu com o Pincel?) then (sim)
-        :Calcular novo ângulo de rebote;
-        :Esfera retorna ao cenário;
-      else (não)
-        :Subtrair 1 Vida;
-        if (Vidas Restantes > 0?) then (sim)
-          :Reiniciar Esfera na posição inicial;
-        else (não)
-          :Declarar Game Over;
-          stop
-        endif
-      endif
+if (Esfera colidiu com Monstro?) then (sim)
+  if (Monstro exige Cor Secundária?) then (sim)
+    if (Jogador misturou as cores primárias corretas?) then (sim)
+      :Eliminar Monstro da Tela;
+      :Somar +5 Pontos ao Score;
+    else (não)
+      :Calcular Rebatimento Físico\n(Monstro continua intacto);
     endif
+  else (não [Cor primária])
+    if (Cor da Esfera == Cor do Monstro?) then (sim)
+      :Eliminar Monstro da Tela;
+      :Somar +5 Pontos ao Score;
+    else (não)
+      :Calcular Rebatimento Físico\n(Monstro continua intacto);
+    endif
+  endif
+      
+else (não [Esfera atingiu base da tela])
+  if (Esfera interceptada pelo Pincel do Jogador?) then (sim)
+    :Calcular novo ângulo de rebote;
+    :Esfera retorna ao cenário;
+  else (não [Bola caiu fora do cenário])
+    :Perder 1 Vida;
+    if (Vidas Restantes > 0?) then (sim)
+      :Reiniciar Esfera e Jogador na posição inicial;
+    else (não [Vida chegou a zero])
+      :Processar Game Over;
+      (A)
+      detach
+    endif
+  endif
+endif
     
-  backward:Esfera continua em movimento;
-  repeat while (Existem monstros na tela?) is (sim)
+if (Existem monstros na tela?) then (sim)
+  :Esfera continua em movimento;
+  (C)
+  detach
+else (não)
+endif
   
-  :Avançar para a Próxima Fase;
+:Progredir de Fase;
+if (Vidas Restantes == 1?) then (sim)
+  :Bonificar +1 Vida;
+else (não)
+endif
 
-backward:Carregar novos monstros;
-repeat while (Fase concluída é a última?) is (não)
+if (Fase concluída é a última?) then (não)
+  :Carregar novos monstros;
+  (B)
+  detach
+else (sim)
+endif
 
-:Declarar Vitória Final (Game Clear);
+:Declarar Game Clear;
 :Atualizar Recorde Histórico;
 stop
 @enduml

@@ -1,3 +1,5 @@
+has_bounced = false;
+
 if (saiu == false)
 {
     x = obj_player.x;
